@@ -1,3 +1,4 @@
+cat > buildspec.yml << 'EOF'
 version: 0.2
 
 env:
@@ -29,7 +30,10 @@ phases:
       - kubectl apply -f service.yaml
       - kubectl rollout status deployment/brain-tasks-app
       - kubectl get pods
-      - kubectl get svcversion: 0.2
+      - kubectl get svc
+EOF
+cat buildspec.ymlcat > buildspec.yml << 'EOF'
+version: 0.2
 
 env:
   variables:
@@ -61,3 +65,5 @@ phases:
       - kubectl rollout status deployment/brain-tasks-app
       - kubectl get pods
       - kubectl get svc
+EOF
+cat buildspec.yml

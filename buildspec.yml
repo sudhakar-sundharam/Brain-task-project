@@ -1,0 +1,63 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_REGION: ap-southeast-2
+    ECR_REPO: brain-tasks-app
+    EKS_CLUSTER_NAME: trend-cluster
+
+phases:
+  install:
+    commands:
+      - echo Installing kubectl...
+      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x kubectl
+      - mv kubectl /usr/local/bin/
+  pre_build:
+    commands:
+      - echo Logging in to ECR...
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 146364515119.dkr.ecr.ap-southeast-2.amazonaws.com
+      - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+  build:
+    commands:
+      - docker build -t $ECR_REPO:latest .
+      - docker tag $ECR_REPO:latest 146364515119.dkr.ecr.ap-southeast-2.amazonaws.com/$ECR_REPO:latest
+  post_build:
+    commands:
+      - docker push 146364515119.dkr.ecr.ap-southeast-2.amazonaws.com/$ECR_REPO:latest
+      - kubectl apply -f deployment.yaml
+      - kubectl apply -f service.yaml
+      - kubectl rollout status deployment/brain-tasks-app
+      - kubectl get pods
+      - kubectl get svcversion: 0.2
+
+env:
+  variables:
+    AWS_REGION: ap-southeast-2
+    ECR_REPO: brain-tasks-app
+    EKS_CLUSTER_NAME: trend-cluster
+
+phases:
+  install:
+    commands:
+      - echo Installing kubectl...
+      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x kubectl
+      - mv kubectl /usr/local/bin/
+  pre_build:
+    commands:
+      - echo Logging in to ECR...
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 146364515119.dkr.ecr.ap-southeast-2.amazonaws.com
+      - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+  build:
+    commands:
+      - docker build -t $ECR_REPO:latest .
+      - docker tag $ECR_REPO:latest 146364515119.dkr.ecr.ap-southeast-2.amazonaws.com/$ECR_REPO:latest
+  post_build:
+    commands:
+      - docker push 146364515119.dkr.ecr.ap-southeast-2.amazonaws.com/$ECR_REPO:latest
+      - kubectl apply -f deployment.yaml
+      - kubectl apply -f service.yaml
+      - kubectl rollout status deployment/brain-tasks-app
+      - kubectl get pods
+      - kubectl get svc

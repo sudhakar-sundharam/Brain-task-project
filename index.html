@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><title>Brain Tasks App</title>
+<style>body{font-family:sans-serif;text-align:center;padding:50px;background:#f0f0f0}input{padding:10px}button{padding:10px 20px;background:#007bff;color:white;border:none}</style>
+</head>
+<body>
+<h1>Brain Tasks App</h1>
+<input id="task" placeholder="Task Type Pannu da...">
+<button onclick="add()">Add</button>
+<ul id="list"></ul>
+<script>
+function add(){let v=document.getElementById('task').value;if(!v)return;let li=document.createElement('li');li.textContent=v;document.getElementById('list').appendChild(li);document.getElementById('task').value=''}
+</script>
+</body>
+</html>

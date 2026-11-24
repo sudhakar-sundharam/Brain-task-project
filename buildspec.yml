@@ -29,4 +29,4 @@ phases:
       - kubectl apply -f service.yaml
       - kubectl rollout status deployment/brain-tasks-app
       - kubectl get pods
-      - kubectl get svc
+      - kubectl get svc 
